@@ -31,13 +31,17 @@ if __name__ == "__main__":
 
     while True:
         try:
-            num1 = input("Enter the first number (Ctrl+C or letters to quit): ")
-            if num1.lower()[0] not in string.digits + ".,-":
-                break
-            num1 = float(num1)
+            if len(sys.argv) < 3:
+                num1 = input("1️⃣  Enter the first number (Ctrl+C or letters to quit): ")
+                if num1.lower()[0] not in string.digits + ".,-":
+                    break
+                num1 = float(num1)
 
-            num2 = input("Enter the second number: ")
-            num2 = float(num2)
+                num2 = input("2️⃣  Enter the second number: ")
+                num2 = float(num2)
+            else:
+                num2 = float(sys.argv.pop())
+                num1 = float(sys.argv.pop())
 
             try:
                 result = inference.local(num1, num2)
