@@ -1,6 +1,7 @@
 # Stupid Modal
-
-![logo](./assets/logo.png)
+<p align="center">
+    <img src="./assets/logo.png" style="width: 50%;">
+</p>
 
 ## Overview
 
@@ -23,6 +24,13 @@ Note: some code in the gRPC section was modified from the
 - gRPC-based Communication: Utilizes gRPC for client-server communication, just like big girl Modal.
 - Remote Python Execution: Sends Python functions and their arguments from client to server for execution., just like big girl Modal
 - Concurrency Handling: Leverages `concurrent.futures` for parallel processing on the server, much less dank than big girl Modal.
+
+## Video
+
+<p align="center">
+    <img src="./assets/demo.gif" style="width: 100%;">
+</p>
+
 
 ## Project Structure
 
