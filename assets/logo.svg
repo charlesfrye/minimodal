@@ -1,0 +1,8 @@
+<svg width="100" height="75" xmlns="http://www.w3.org/2000/svg" style="background-color: black;">
+    <!-- First Wavy Prism rotated by 35 degrees -->
+    <path d="M10,10 Q20,0 30,10 L25,55 Q20,65 15,55 Z" stroke="#39FF14" stroke-width="3" fill="none"
+        transform="rotate(35 20 32.5) translate(10 0)" />
+    <!-- Second Wavy Prism rotated by 125 degrees -->
+    <path d="M70,10 Q80,0 90,10 L85,55 Q80,65 75,55 Z" stroke="#39FF14" stroke-width="3" fill="none"
+        transform="rotate(125 80 32.5) translate(10 10)" />
+</svg>

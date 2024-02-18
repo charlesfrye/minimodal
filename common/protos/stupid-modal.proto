@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package stupidmodal;
+
+// The StupidModal service provides a simple interface for executing Python functions remotely.
+service StupidModal {
+    // Executes a Python function remotely.
+    // The function and its arguments are serialized and sent to the server,
+    // which deserializes, executes the function, and returns the serialized result.
+    rpc RunFunction (PickledPythonRequest) returns (PickledPythonResponse) {}
+}
+
+// Request message for remote Python function execution.
+message PickledPythonRequest {
+    // Serialized Python function to execute.
+    bytes pickled_function = 1;
+    // Serialized arguments for the Python function.
+    bytes pickled_arguments = 2;
+}
+
+// Response message for remote Python function execution.
+message PickledPythonResponse {
+    // Serialized result of the executed Python function.
+    bytes pickled_result = 1;
+}
