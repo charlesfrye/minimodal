@@ -36,7 +36,11 @@ def serve():
     server.add_insecure_port("[::]:50051")
     server.start()
     print("👂 listening on port 50051")
-    server.wait_for_termination()
+    try:
+        server.wait_for_termination()
+    except KeyboardInterrupt:
+        print("\n👋 shutting down stupid_modal")
+        server.stop(0)
 
 
 if __name__ == "__main__":
