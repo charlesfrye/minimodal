@@ -23,7 +23,7 @@ class Stub:
         self._stub = stupid_modal_pb2_grpc.StupidModalStub(self._channel)
 
     def function(self, func):
-        def wrapper(*args):  # TODO: support kwargs?
+        def wrapper(*args):
             pickled_func = cloudpickle.dumps(func)
             pickled_args = cloudpickle.dumps(args)
             response = self._stub.RunFunction(
