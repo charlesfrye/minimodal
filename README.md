@@ -1,11 +1,11 @@
-# Stupid Modal
+# MiniModal
 <p align="center">
     <img src="./assets/logo.png" style="width: 50%;">
 </p>
 
 ## Overview
 
-Stupid Modal is a toy project showing off the very simplest features of Modal that a smol brain Python developer,
+MiniModal is a toy project showing off the very simplest features of Modal that a smol brain Python developer,
 like [me](https://twitter.com/charles_irl),
 needs to grok to be able to use it effectively.
 
@@ -22,8 +22,7 @@ Note: some code in the gRPC section was modified from the
 ## Features
 
 - gRPC-based Communication: Utilizes gRPC for client-server communication, just like big girl Modal.
-- Remote Python Execution: Sends Python functions and their arguments from client to server for execution., just like big girl Modal
-- Concurrency Handling: Leverages `concurrent.futures` for parallel processing on the server, much less dank than big girl Modal.
+- Remote Python Execution: Sends Python functions and their arguments from client to server for execution, just like big girl Modal
 
 ## Video
 
@@ -36,14 +35,16 @@ Note: some code in the gRPC section was modified from the
 
 ```bash
 .
-├── app  # Stupid version of code a Modal user would write
+├── app  # Simple version of code a Modal user would write
 │   └── app.py
-├── client  # Stupid version of the Modal client package
-│   └── client.py
-├── common # Stupid version of Modal communication protocol
+├── client  # Simple version of the Modal client package
+│   └── minimodal
+│       ├── client.py # Simple version of Modal's client code
+│       ├── cli.pu # Simple version of Modal's command line tool
+├── common # Simple version of Modal communication protocol
 │   └── protos
-│       └── stupid-modal.proto
-└── server # Stupid version of Modal's server code (_very_ Stupid)
+│       └── minimodal.proto
+└── server # Simple version of Modal's server code
     └── server.py
 ```
 
@@ -52,7 +53,7 @@ Note: some code in the gRPC section was modified from the
 ### Install Dependencies
 
 In `./server`
-create a virtual environment in a subfolder called `.stupid-modal-server` however you like
+create a virtual environment in a subfolder called `.server` however you like
 (I used [`uv venv`](https://github.com/astral-sh/uv),
 to stay on trend),
 then install the local `requirements.txt` file.
@@ -62,8 +63,8 @@ then install the local `requirements.txt` file.
 From the `server` directory, run:
 
 ```bash
-source .stupid-modal-server/bin/activate
-python -m grpc_tools.protoc -I../common/protos --python_out=../common/generated/python --grpc_python_out=../common/generated/python ../common/protos/stupid-modal.proto
+source .server/bin/activate
+python -m grpc_tools.protoc -I../common/protos --python_out=../common/generated/python --grpc_python_out=../common/generated/python ../common/protos/minimodal.proto
 ```
 
 ## Running the Demo
@@ -73,7 +74,7 @@ python -m grpc_tools.protoc -I../common/protos --python_out=../common/generated/
 Navigate to the server directory and run:
 
 ```bash
-source .stupid-modal-server/bin/activate
+source .server/bin/activate
 python server.py
 ```
 
@@ -87,7 +88,7 @@ and that's also why the "e" stands for "ergonomics").
 For Modal, that "somewhere else" is
 "somewhere in our global cloud infrastructure".
 
-For Stupid Modal, that's just another Python process
+For MiniModal, that's just another Python process
 on the same machine.
 
 ### Set up the "local" environment for the "app"
@@ -107,14 +108,14 @@ so you can play with it as well.
 
 Modal takes your code and runs it in the cloud.
 
-Stupid Modal takes your code and runs it on your computer.
+MiniModal takes your code and runs it on your computer.
 
 In the `./app` directory,
 run `app.py`:
 
 ```bash
 source .app/bin/activate
-python app.py
+minimodal run app.py
 ```
 
 Follow the on-screen prompts to execute the  `app.inference` function
@@ -122,10 +123,10 @@ on the server.
 
 Notice that `.local` execution on the client fails!
 
-Even in Stupid Modal, we can set it up so that the server can do
+Even in MiniModal, we can set it up so that the server can do
 things the client can't -- in this case, the server has `numpy` on it.
 
-In not-stupid Modal, the server might
+In grown-up Modal, the server might
 [have a GPU](https://modal.com/docs/guide/gpu),
 or it might be
 [100 containers running at once](https://modal.com/docs/guide/scale),

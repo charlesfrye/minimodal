@@ -11,27 +11,50 @@ sys.path.append(
     str(Path(__file__).resolve().parent.parent / "common" / "generated" / "python")
 )
 
-import stupid_modal_pb2
-import stupid_modal_pb2_grpc
+import minimodal_pb2
+import minimodal_pb2_grpc
 
 
-class StupidModalServicer(stupid_modal_pb2_grpc.StupidModalServicer):
+class MiniModalServicer(minimodal_pb2_grpc.MiniModalServicer):
+    script_path = Path("/tmp/app.py")
+
+    def __init__(self):
+        self.environment = {}  # Placeholder for environment management
+
+    def SendPythonFile(self, request, context):
+        try:
+            with open(self.script_path, "wb") as py_file:
+                py_file.write(request.py_file)
+            return minimodal_pb2.PythonFileResponse(status=0)  # Success
+        except Exception as e:
+            print("error: {e}")
+            return minimodal_pb2.PythonFileResponse(status=1)  # Failure
 
     def RunFunction(self, request, context):
-        response = stupid_modal_pb2.PickledPythonResponse()
-        request_function = cloudpickle.loads(request.pickled_function)
-        print(f"🏃 running {request_function}")
-        request_arguments = cloudpickle.loads(request.pickled_arguments)
-        response.pickled_result = cloudpickle.dumps(
-            request_function(*request_arguments)
-        )
-        return response
+        import importlib
+
+        print(f"📦 loading app: {self.script_path}")
+        spec = importlib.util.spec_from_file_location("app", self.script_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        print(f"🏃‍ running function: {request.function_id}")
+        func = getattr(module, request.function_id)
+        inputs = cloudpickle.loads(request.pickled_inputs)
+        result = func.local(*inputs)
+
+        print(f"🏁 result: {result}")
+
+        # Serialize the result and send it back
+        pickled_result = cloudpickle.dumps(result)
+
+        return minimodal_pb2.RunFunctionResponse(pickled_result=pickled_result)
 
 
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    stupid_modal_pb2_grpc.add_StupidModalServicer_to_server(
-        StupidModalServicer(), server
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
+    minimodal_pb2_grpc.add_MiniModalServicer_to_server(
+        MiniModalServicer(), server
     )
     server.add_insecure_port("[::]:50051")
     server.start()
@@ -39,10 +62,10 @@ def serve():
     try:
         server.wait_for_termination()
     except KeyboardInterrupt:
-        print("\n👋 shutting down stupid_modal")
+        print("\n👋 shutting down minimodal server")
         server.stop(0)
 
 
 if __name__ == "__main__":
-    print("🎬 starting up stupid_modal")
+    print("🎬 starting up minimodal server")
     serve()

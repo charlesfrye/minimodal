@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package minimodal;
+
+// The MiniModal service provides a simple interface for executing Python functions remotely.
+service MiniModal {
+    // Executes a Python function remotely.
+    rpc RunFunction (RunFunctionRequest) returns (RunFunctionResponse) {}
+    // Sends over a Python file to define the environment for a Python function
+    rpc SendPythonFile (PythonFile) returns (PythonFileResponse) {}
+}
+
+// Request message for remote Python function execution.
+message RunFunctionRequest {
+    //  Identifier of Python function to execute.
+    string function_id = 1;
+    // Serialized inputs for the Python function.
+    bytes pickled_inputs = 2;
+}
+
+// Request message for sending a Python file to the server.
+message PythonFile {
+    // Serialized Python file to send to the server.
+    bytes py_file = 1;
+}
+
+// Response message for remote Python function execution.
+message RunFunctionResponse {
+    // Serialized result of the executed Python function.
+    bytes pickled_result = 1;
+}
+
+
+// Response message for sending a Python file to the server.
+message PythonFileResponse {
+    // Exit status of the file transfer.
+    int32 status = 1;
+}

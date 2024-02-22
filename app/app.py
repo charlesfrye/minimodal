@@ -7,9 +7,9 @@ import cloudpickle
 
 sys.path.append(str(Path(__file__).resolve().parent.parent / "client"))
 
-import client as stupid_modal
+import minimodal
 
-stub = stupid_modal.Stub()
+stub = minimodal.Stub()
 
 
 @stub.function
@@ -51,7 +51,5 @@ if __name__ == "__main__":
             result = inference.remote(num1, num2)
             print(f"💚 succeeded on remote server: {result}")
 
-        except ValueError:
-            print(f"Invalid input: {num1, num2}. Exiting.")
         except (KeyboardInterrupt, EOFError):
             break

@@ -3,12 +3,16 @@ requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "stupid_modal"
-version = "0.0.1rc2"
+name = "minimodal"
+version = "0.0.6"
 dependencies = [
     "cloudpickle==3.0.0",
     "grpcio==1.60.1",
     "grpcio-tools==1.60.1",
     "protobuf==4.25.3",
     "setuptools==69.1.0",
+    "click==8.1.7",
 ]
+
+[project.scripts]
+minimodal = "minimodal.cli:cli"
