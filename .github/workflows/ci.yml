@@ -1,0 +1,35 @@
+name: CI
+
+on:
+    push:
+    pull_request:
+    workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install minimodal server dependencies
+      run: |
+        python -m venv server/.server
+        source server/.server/bin/activate
+        pip install -r server/requirements.txt
+
+    - name: Install minimodal demo app dependencies
+      run: |
+        python -m venv app/.app
+        source app/.app/bin/activate
+        pip install -r app/requirements.txt
+
+    - name: Run end-to-end tests
+      run: |
+        python tests/test_e2e.py
