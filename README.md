@@ -40,7 +40,7 @@ Note: some code in the gRPC section was modified from the
 ├── client  # Simple version of the Modal client package
 │   └── minimodal
 │       ├── client.py # Simple version of Modal's client code
-│       ├── cli.pu # Simple version of Modal's command line tool
+│       ├── cli.py # Simple version of Modal's command line tool
 ├── common # Simple version of Modal communication protocol
 │   └── protos
 │       └── minimodal.proto
