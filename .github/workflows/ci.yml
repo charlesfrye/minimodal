@@ -24,16 +24,17 @@ jobs:
 
     - name: Install minimodal server dependencies
       run: |
-        python -m venv server/.server
-        source server/.server/bin/activate
         cd server
-        pip install -r server/requirements.txt
+        python -m venv .server
+        source .server/bin/activate
+        pip install -r requirements.txt
 
     - name: Install minimodal demo app dependencies
       run: |
-        python -m venv app/.app
-        source app/.app/bin/activate
-        pip install -r app/requirements.txt
+        cd app
+        python -m venv .app
+        source .app/bin/activate
+        pip install -r requirements.txt
 
     - name: Run end-to-end tests
       run: |
