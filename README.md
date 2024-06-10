@@ -104,7 +104,7 @@ pip install -r requirements.txt
 This installs the `client` as an editable library,
 so you can play with it as well.
 
-### Run a function on Stupid Modal
+### Run a function on MiniModal
 
 Modal takes your code and runs it in the cloud.
 
