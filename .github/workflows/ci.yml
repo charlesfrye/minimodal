@@ -22,6 +22,7 @@ jobs:
       run: |
         python -m venv server/.server
         source server/.server/bin/activate
+        cd server
         pip install -r server/requirements.txt
 
     - name: Install minimodal demo app dependencies
