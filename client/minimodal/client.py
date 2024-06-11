@@ -7,14 +7,19 @@ import cloudpickle
 import grpc
 
 sys.path.append(
-    str(Path(__file__).resolve().parent.parent.parent / "common" / "generated" / "python")
+    str(
+        Path(__file__).resolve().parent.parent.parent
+        / "common"
+        / "generated"
+        / "python"
+    )
 )
 
 import minimodal_pb2
 import minimodal_pb2_grpc
 
 
-class Stub:
+class App:
     def __init__(self):
         self._channel = grpc.insecure_channel("localhost:50051")
         self._stub = minimodal_pb2_grpc.MiniModalStub(self._channel)

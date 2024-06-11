@@ -7,10 +7,10 @@ sys.path.append(str(Path(__file__).resolve().parent.parent / "client"))
 
 import minimodal
 
-stub = minimodal.Stub()
+app = minimodal.App()
 
 
-@stub.function
+@app.function
 def inference(x1, x2):
     """A stand in for real inference.
 

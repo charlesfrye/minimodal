@@ -4,18 +4,20 @@ import click
 
 from . import client
 
+
 @click.group()
 def cli():
     click.echo("🚀 launching minimodal CLI")
+
 
 @click.argument("file")
 @cli.command()
 def run(file):
     """Runs the provided file, coordinating remote calls to minimodal."""
     click.echo("🐴 mounting file on minimodal")
-    stub = client.Stub()
+    app = client.App()
     try:
-        stub.mount(file)
+        app.mount(file)
     except Exception as e:
         click.echo(f"❌ failed to mount file: {e}")
         return

@@ -1,1 +1,1 @@
-from .client import Stub
+from .client import App
