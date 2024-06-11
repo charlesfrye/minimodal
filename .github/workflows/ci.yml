@@ -1,0 +1,43 @@
+name: CI
+
+on:
+    push:
+        branches:
+        - main
+    pull_request:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install minimodal server dependencies
+      run: |
+        cd server
+        python -m venv .server
+        source .server/bin/activate
+        pip install -r requirements.txt
+        mkdir -p ../common/generated/python
+        python -m grpc_tools.protoc -I../common/protos --python_out=../common/generated/python --grpc_python_out=../common/generated/python ../common/protos/minimodal.proto
+
+    - name: Install minimodal demo app dependencies
+      run: |
+        cd app
+        python -m venv .app
+        source .app/bin/activate
+        pip install -r requirements.txt
+
+    - name: Run end-to-end tests
+      run: |
+        python tests/test_e2e.py
