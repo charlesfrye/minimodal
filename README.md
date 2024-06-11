@@ -22,7 +22,7 @@ Note: some code in the gRPC section was modified from the
 ## Features
 
 - gRPC-based Communication: Utilizes gRPC for client-server communication, just like big girl Modal.
-- Remote Python Execution: Sends Python functions and their arguments from client to server for execution, just like big girl Modal
+- Remote Python Execution: Sends Python modules, functions, and arguments from client to server for execution, just like big girl Modal
 
 ## Video
 
