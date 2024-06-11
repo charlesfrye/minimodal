@@ -1,6 +1,7 @@
 # MiniModal
 <p align="center">
     <img src="./assets/logo.png" style="width: 50%;">
+    <br /><caption>The Modal logo, as drawn by GPT-4.</caption>
 </p>
 
 ## Overview
