@@ -28,6 +28,7 @@ jobs:
         python -m venv .server
         source .server/bin/activate
         pip install -r requirements.txt
+        python -m grpc_tools.protoc -I../common/protos --python_out=../common/generated/python --grpc_python_out=../common/generated/python ../common/protos/minimodal.proto
 
     - name: Install minimodal demo app dependencies
       run: |
