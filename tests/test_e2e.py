@@ -1,7 +1,9 @@
 import logging
+import os
 import subprocess
-import time
 import signal
+import sys
+import time
 
 logging.basicConfig(level=logging.INFO)
 
@@ -9,7 +11,9 @@ logging.basicConfig(level=logging.INFO)
 def run_server():
     command = "source server/.server/bin/activate && python server/server.py"
     try:
-        process = subprocess.Popen(command, shell=True, executable="/bin/bash")
+        process = subprocess.Popen(
+            command, shell=True, executable="/bin/bash", preexec_fn=os.setsid
+        )
         logging.info("Server started with PID %d", process.pid)
         return process
     except Exception as e:
@@ -45,19 +49,26 @@ def test_e2e():
     # simulate user interaction
     inputs = b"3\n5\n"
     app.stdin.write(inputs)
-    app.stdin.flush()
+    try:
+        app.stdin.flush()
+    except BrokenPipeError:
+        print("Error starting app")
+        print("App Output:\n", app.stdout.read().decode())
     time.sleep(1)
 
     stdout, stderr = app.communicate()
-    print("Client Output:\n", stdout.decode())
-    print("Client Error:\n", stderr.decode())
+    print("App Output:\n", stdout.decode())
+    if err := stderr.decode():
+        print("App Error:\n", err)
 
     # send keyboard interrupt to the app process
     app.send_signal(signal.SIGINT)
+    app.wait()
 
-    server.terminate()
+    # send interrupt to server process group
+    os.killpg(os.getpgid(server.pid), signal.SIGINT)
     server.wait()
 
 
 if __name__ == "__main__":
-    test_e2e()
+    sys.exit(test_e2e())
