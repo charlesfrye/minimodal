@@ -2,6 +2,7 @@
 
 from concurrent import futures
 from pathlib import Path
+import signal
 import sys
 
 import cloudpickle
@@ -27,7 +28,7 @@ class MiniModalServicer(minimodal_pb2_grpc.MiniModalServicer):
                 py_file.write(request.py_file)
             return minimodal_pb2.PythonFileResponse(status=0)  # Success
         except Exception as e:
-            print("error: {e}")
+            print(f"error: {e}")
             return minimodal_pb2.PythonFileResponse(status=1)  # Failure
 
     def RunFunction(self, request, context):
@@ -53,17 +54,23 @@ class MiniModalServicer(minimodal_pb2_grpc.MiniModalServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
-    minimodal_pb2_grpc.add_MiniModalServicer_to_server(
-        MiniModalServicer(), server
-    )
+    minimodal_pb2_grpc.add_MiniModalServicer_to_server(MiniModalServicer(), server)
+
     server.add_insecure_port("[::]:50051")
     server.start()
     print("👂 listening on port 50051")
-    try:
-        server.wait_for_termination()
-    except KeyboardInterrupt:
+
+    # handle shutdown
+    def handle_signal(sig, frame):
         print("\n👋 shutting down minimodal server")
         server.stop(0)
+        print("✅ minimodal server stopped")
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, handle_signal)
+    signal.signal(signal.SIGTERM, handle_signal)
+
+    server.wait_for_termination()
 
 
 if __name__ == "__main__":
